@@ -2,7 +2,7 @@ package com.codebaybeaccesstest.codebaybeaccesstest.integration
 
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.User
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.repositories.UsersRepository
-import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.ActiveUsersResponseDto
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.ActiveUserResponseDto
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.junit.jupiter.api.BeforeEach
@@ -55,9 +55,11 @@ class TestUserControllerShould {
                 .andExpect(ok())
                 .andReturn()
 
-        val activeUsersResponse = jsonTo<ActiveUsersResponseDto>(result.response.contentAsString)
+        val activeUsersResponse = jsonTo<List<ActiveUserResponseDto>>(result.response.contentAsString)
 
-        assertThat(activeUsersResponse.name).isEqualTo(mockedUsers[0].name)
+        for ((index,user) in activeUsersResponse.withIndex()) {
+            assertThat(user.name).isEqualTo(mockedUsers[index].name)
+        }
     }
 
     private inline fun <reified T> jsonTo(json: String) = jacksonObjectMapper().readValue<T>(json)
