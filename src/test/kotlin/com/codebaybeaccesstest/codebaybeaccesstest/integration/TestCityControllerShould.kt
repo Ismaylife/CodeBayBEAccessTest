@@ -1,8 +1,8 @@
 package com.codebaybeaccesstest.codebaybeaccesstest.integration
 
-import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.User
+import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.City
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.repositories.UsersRepository
-import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.ActiveUserResponseDto
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.CityResponseDto
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.junit.jupiter.api.BeforeEach
@@ -26,39 +26,34 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers
 @ExtendWith(SpringExtension::class)
 @ContextConfiguration
 @AutoConfigureMockMvc
-class TestUserControllerShould {
+class TestCityControllerShould {
     @Autowired
     lateinit var mvc: MockMvc
 
     @MockBean
     lateinit var usersRepository: UsersRepository
 
-    private val mockedUsers = listOf(
-            User(
-                    name = "irrelevant",
-                    surname = "irrelevant",
-                    active = true,
-                    email = "irrelevant",
-                    city = "irrelevant",
-                    birthday = Date(),
-                    creationDate = Date())
+    private val mockedCities = listOf(
+            City(
+                    city = "irrelevant"
+            )
     )
 
     @BeforeEach
     fun setup() {
-        `when`(usersRepository.getActiveUsers()).thenReturn(mockedUsers)
+        `when`(usersRepository.getCities()).thenReturn(mockedCities)
     }
 
     @Test
-    fun retrieve_a_list_of_active_users() {
-        val result: MvcResult = mvc.perform(MockMvcRequestBuilders.get("/users"))
+    fun retrieve_a_list_of_cities() {
+        val result: MvcResult = mvc.perform(MockMvcRequestBuilders.get("/cities"))
                 .andExpect(ok())
                 .andReturn()
 
-        val activeUsersResponse = jsonTo<List<ActiveUserResponseDto>>(result.response.contentAsString)
+        val citiesResponse = jsonTo<List<CityResponseDto>>(result.response.contentAsString)
 
-        for ((index,user) in activeUsersResponse.withIndex()) {
-            assertThat(user.name).isEqualTo(mockedUsers[index].name)
+        for ((index, city) in citiesResponse.withIndex()) {
+            assertThat(city.city).isEqualTo(mockedCities[index].city)
         }
     }
 
@@ -66,4 +61,3 @@ class TestUserControllerShould {
 
     fun ok() = MockMvcResultMatchers.status().isOk
 }
-

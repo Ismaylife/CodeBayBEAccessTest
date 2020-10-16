@@ -10,6 +10,6 @@ fun User.toActiveUsersDto() =
                 active = active,
                 email = email,
                 city = city,
-                birthday = "aaa",
-                creationDate = "aaa"
+                birthday = "birthday",
+                creationDate = "creationDate"
         )
