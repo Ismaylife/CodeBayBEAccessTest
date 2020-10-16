@@ -1,6 +1,5 @@
 package com.codebaybeaccesstest.codebaybeaccesstest.integration
 
-import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.City
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.User
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.repositories.UsersRepository
 import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.ActiveUserResponseDto
@@ -67,8 +66,8 @@ class TestUserControllerShould {
 
     private val mockedCities = listOf(
             City(
-                    city = "irrelevant"
-                    ))
+            city = "irrelevant"
+            ))
 
 
     @Test
@@ -97,11 +96,18 @@ class TestUserControllerShould {
         }
     }
 
+    @Test
+    fun add_a_new_user_to_DB(){
+        val result: MvcResult = mvc.perform(MockMvcRequestBuilders.get("/users"))
+                .andExpect(ok())
+                .andReturn()
+
+    }
+
 
     private inline fun <reified T> jsonTo(json: String) = jacksonObjectMapper().readValue<T>(json)
 
     fun ok() = MockMvcResultMatchers.status().isOk
-
 
 }
 
