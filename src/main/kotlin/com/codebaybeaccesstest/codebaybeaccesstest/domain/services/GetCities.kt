@@ -1,7 +1,6 @@
 package com.codebaybeaccesstest.codebaybeaccesstest.domain.services
 
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.City
-import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.User
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.repositories.UsersRepository
 import org.springframework.stereotype.Service
 

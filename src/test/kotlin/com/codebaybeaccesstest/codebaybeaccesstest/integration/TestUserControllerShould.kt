@@ -1,8 +1,10 @@
 package com.codebaybeaccesstest.codebaybeaccesstest.integration
 
+import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.City
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.User
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.repositories.UsersRepository
 import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.ActiveUserResponseDto
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.CityResponseDto
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.junit.jupiter.api.BeforeEach
@@ -47,6 +49,7 @@ class TestUserControllerShould {
     @BeforeEach
     fun setup() {
         `when`(usersRepository.getActiveUsers()).thenReturn(mockedUsers)
+        `when`(usersRepository.getCities()).thenReturn(mockedCities)
     }
 
     @Test
@@ -58,12 +61,49 @@ class TestUserControllerShould {
         val activeUsersResponse = jsonTo<List<ActiveUserResponseDto>>(result.response.contentAsString)
 
         for ((index,user) in activeUsersResponse.withIndex()) {
-            assertThat(user.name).isEqualTo(mockedUsers[index].name)
+            assertThat(user.active).isEqualTo(mockedUsers[index].active);
         }
     }
+
+    private val mockedCities = listOf(
+            City(
+                    city = "irrelevant"
+                    ))
+
+
+    @Test
+    fun retrieve_a_list_of_cities() {
+        val result: MvcResult = mvc.perform(MockMvcRequestBuilders.get("/cities"))
+                .andExpect(ok())
+                .andReturn()
+
+        val citiesResponse = jsonTo<List<CityResponseDto>>(result.response.contentAsString)
+
+        for ((index,user) in citiesResponse.withIndex()) {
+            assertThat(user.city).isEqualTo(mockedCities[index].city);
+        }
+    }
+
+    @Test
+    fun retrieve_a_list_of_users_ordered_asc() {
+        val result: MvcResult = mvc.perform(MockMvcRequestBuilders.get("/users"))
+                .andExpect(ok())
+                .andReturn()
+
+        val activeUsersResponse = jsonTo<List<ActiveUserResponseDto>>(result.response.contentAsString)
+
+        for ((index,user) in activeUsersResponse.withIndex()) {
+            assertThat(user.active).isEqualTo(mockedUsers[index].active);
+        }
+    }
+
 
     private inline fun <reified T> jsonTo(json: String) = jacksonObjectMapper().readValue<T>(json)
 
     fun ok() = MockMvcResultMatchers.status().isOk
+
+
 }
+
+
 

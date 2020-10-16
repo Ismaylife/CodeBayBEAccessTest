@@ -7,4 +7,8 @@ interface UsersRepository {
         fun getActiveUsers(): List<User>
 
         fun getCities(): List<City>
+
+        fun getUsersPerCreationDate(): List<User>
+
+        fun addNewUser(): User
     }
