@@ -5,8 +5,11 @@ import com.codebaybeaccesstest.codebaybeaccesstest.domain.repositories.UsersRepo
 import org.springframework.stereotype.Service
 
 @Service
-class GetActiveUsers(
-        private val usersRepository: UsersRepository
+class GetUsersPerCreationDateDesc(
+        private val usersRepository : UsersRepository
 ) {
-    fun invoke(): List<User> = usersRepository.getActiveUsers()
+
+    fun invoke(): List<User> {
+        return usersRepository.getPerCreationDateDesc()
+    }
 }

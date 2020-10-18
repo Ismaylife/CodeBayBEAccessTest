@@ -65,9 +65,15 @@ class TestUserControllerShould {
     }
 
     private val mockedCities = listOf(
-            City(
-            city = "irrelevant"
-            ))
+            User(
+                    name = "irrelevant",
+                    surname = "irrelevant",
+                    active = true,
+                    email = "irrelevant",
+                    city = "irrelevant",
+                    birthday = Date(),
+                    creationDate = Date())
+            )
 
 
     @Test

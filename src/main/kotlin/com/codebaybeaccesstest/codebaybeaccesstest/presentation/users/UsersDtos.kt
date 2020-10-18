@@ -1,6 +1,6 @@
 package com.codebaybeaccesstest.codebaybeaccesstest.presentation.users
 
-data class ActiveUserResponseDto(
+data class UserResponseDto(
             val name: String,
             val surname: String,
             val active: Boolean,

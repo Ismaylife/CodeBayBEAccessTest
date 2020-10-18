@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 class GetCities (
     private val usersRepository : UsersRepository
 ){
-        fun invoke(): List<User> {
-            return usersRepository.getCities()
+        fun invoke(city: String): List<User> {
+            return usersRepository.getCities(city)
         }
 }
