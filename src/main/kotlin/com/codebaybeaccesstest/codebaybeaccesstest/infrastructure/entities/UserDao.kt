@@ -7,6 +7,7 @@ import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.Table
 
+/**Just create a table and fill it with the Users as a Json file*/
 @Entity
 @Table(name = "users")
 data class UserDao(

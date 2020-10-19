@@ -3,6 +3,7 @@ package com.codebaybeaccesstest.codebaybeaccesstest.infrastructure.entities.mapp
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.User
 import com.codebaybeaccesstest.codebaybeaccesstest.infrastructure.entities.UserDao
 
+/**Our converters between User and Dao and vice versa*/
 fun List<User>.toUserDao() = map { it.toUserDao() }
 fun User.toUserDao() =
         UserDao(
