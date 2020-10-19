@@ -1,16 +1,19 @@
 package com.codebaybeaccesstest.codebaybeaccesstest.presentation.users
 
-import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.User
-import com.codebaybeaccesstest.codebaybeaccesstest.domain.repositories.UsersRepository
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.services.*
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.dtos.CityResponseDto
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.dtos.NewUserDto
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.dtos.UserResponseDto
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.mappers.toCitiesDto
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.mappers.toUser
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.mappers.toUsersDto
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 
 
-class UsersController(private val usersRepository: UsersRepository) {
+class UsersController {
     @Autowired
     lateinit var getActiveUsers: GetActiveUsers
-
 
     @GetMapping("/users")
     fun getActiveUsers(): List<UserResponseDto> {
@@ -20,8 +23,7 @@ class UsersController(private val usersRepository: UsersRepository) {
     @Autowired
     lateinit var getUsersPerCreationDateAsc: GetUsersPerCreationDateAsc
 
-
-    @GetMapping("/users/{creationDate}")
+    @GetMapping("/users/creationDateAsc")
     fun getUsersPerCreationDateAsc(): List<UserResponseDto> {
         return getUsersPerCreationDateAsc.invoke().toUsersDto()
     }
@@ -29,8 +31,7 @@ class UsersController(private val usersRepository: UsersRepository) {
     @Autowired
     lateinit var getUsersPerCreationDateDesc: GetUsersPerCreationDateAsc
 
-
-    @GetMapping("/users/{creationDate}")
+    @GetMapping("/users/creationDateDesc")
     fun getUsersPerCreationDateDes(): List<UserResponseDto> {
         return getUsersPerCreationDateDesc.invoke().toUsersDto()
     }
@@ -38,19 +39,16 @@ class UsersController(private val usersRepository: UsersRepository) {
     @Autowired
     lateinit var getCities: GetCities
 
-
     @GetMapping("/users/{city}")
-    fun getCities(@RequestBody city : String): List<CityResponseDto> {
+    fun getCities(@RequestParam city : String): List<CityResponseDto> {
         return getCities.invoke(city).toCitiesDto()
     }
 
     @Autowired
     lateinit var addNewUser: AddNewUser
 
-
     @PostMapping("/users")
-    fun addNewUser(@RequestBody user : User){
-        addNewUser.invoke(user)
+    fun addNewUser(@RequestBody newUser : NewUserDto){
+        addNewUser.invoke(newUser.toUser())
     }
-
 }

@@ -1,9 +1,10 @@
 package com.codebaybeaccesstest.codebaybeaccesstest.integration
 
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.entities.User
+import com.codebaybeaccesstest.codebaybeaccesstest.infrastructure.entities.UserDao
 import com.codebaybeaccesstest.codebaybeaccesstest.domain.repositories.UsersRepository
-import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.ActiveUserResponseDto
-import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.CityResponseDto
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.dtos.CityResponseDto
+import com.codebaybeaccesstest.codebaybeaccesstest.presentation.users.dtos.UserResponseDto
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.junit.jupiter.api.BeforeEach
@@ -48,7 +49,7 @@ class TestUserControllerShould {
     @BeforeEach
     fun setup() {
         `when`(usersRepository.getActiveUsers()).thenReturn(mockedUsers)
-        `when`(usersRepository.getCities()).thenReturn(mockedCities)
+        `when`(usersRepository.getCities("irrelevant")).thenReturn(mockedCities)
     }
 
     @Test
@@ -57,7 +58,7 @@ class TestUserControllerShould {
                 .andExpect(ok())
                 .andReturn()
 
-        val activeUsersResponse = jsonTo<List<ActiveUserResponseDto>>(result.response.contentAsString)
+        val activeUsersResponse = jsonTo<List<UserResponseDto>>(result.response.contentAsString)
 
         for ((index,user) in activeUsersResponse.withIndex()) {
             assertThat(user.active).isEqualTo(mockedUsers[index].active);
@@ -95,7 +96,7 @@ class TestUserControllerShould {
                 .andExpect(ok())
                 .andReturn()
 
-        val activeUsersResponse = jsonTo<List<ActiveUserResponseDto>>(result.response.contentAsString)
+        val activeUsersResponse = jsonTo<List<UserResponseDto>>(result.response.contentAsString)
 
         for ((index,user) in activeUsersResponse.withIndex()) {
             assertThat(user.active).isEqualTo(mockedUsers[index].active);
